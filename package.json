@@ -1,8 +1,8 @@
 {
-	"name": "css-sorting",
-	"displayName": "CSS Sorting",
+	"name": "css-better-sorting",
+	"displayName": "CSS Better Sorting",
 	"description": "VS Code plugin to sort CSS rules content with specified order.",
-	"version": "4.0.2",
+	"version": "3.0.3",
 	"homepage": "https://github.com/openages/css-sorting",
 	"repository": {
 		"type": "git",
@@ -11,9 +11,9 @@
 	"license": "MIT",
 	"publisher": "1yasa",
 	"icon": "./icon.png",
-	"keywords": ["postcss", "css", "csscomb", "sorting", "order", "rank"],
+	"keywords": ["css", "better", "sorting", "order", "rank", "csscomb", "postcss"],
 	"vsce": {
-		"baseImagesUrl": "./icon.png",
+		"baseImagesUrl": "",
 		"dependencies": true,
 		"yarn": false
 	},
@@ -145,10 +145,10 @@
 	},
 	"scripts": {
 		"postinstall": "node ./node_modules/vscode/bin/install",
-		"compile": "tsc",
+		"tsc": "tsc",
 		"package": "vsce package",
 		"publish": "vsce publish",
-		"dev": "npm run compile --sourceMap --watch",
-		"build": "npm run compile && npm run package"
+		"dev": "npm run tsc --sourceMap --watch",
+		"build": "npm run tsc && npm run package"
 	}
 }

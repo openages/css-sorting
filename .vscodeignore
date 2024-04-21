@@ -1,7 +1,6 @@
 .vscode/**
 .vscode-test/**
 typings/**
-fixtures/**
 src/**
 .editorconfig
 .gitignore
@@ -9,3 +8,4 @@ src/**
 tsconfig.json
 tslint.json
 *-lock.yaml
+

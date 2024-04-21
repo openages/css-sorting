@@ -7,6 +7,8 @@ See the [extension installation guide](https://code.visualstudio.com/docs/editor
 
 ## Usage
 
+![example](example.gif)
+
 - Autosave trigger.
 - Full text mode: Press <kbd>F1</kbd> and run the command named `CSS Sorting: Run`.
 - Range mode: Select `full` css class and open context menu to `CSS Sorting: Format`.
