@@ -1,0 +1,13 @@
+.block {
+	position: absolute;
+	top: 0;
+	width: 50%;
+
+	span {
+		display: inline-block;
+	}
+
+	&__element {
+		display: none;
+	}
+}
