@@ -39,6 +39,10 @@ For example:
 }
 ```
 
+## Publish Tips
+
+Use `npm` with vsce, don't use pnpm that will be cause error in build.
+
 
 ## License
 

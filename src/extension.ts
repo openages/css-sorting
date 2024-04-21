@@ -1,9 +1,9 @@
 import { globSync } from 'fast-glob'
-import { readFileSync, statSync, writeFileSync } from 'fs'
+import { readFileSync, writeFileSync } from 'fs'
 import { extname } from 'path'
 import vscode from 'vscode'
 
-import { transform, use } from './css-sorting'
+import { transform, use } from './sorting'
 import { output } from './utils'
 
 export function activate(context: vscode.ExtensionContext): void {
@@ -71,23 +71,17 @@ export function activate(context: vscode.ExtensionContext): void {
 		writeFileSync(path, css)
 	}
 
-	const sortFiles = async (uri: any) => {
-		const info = statSync(uri.path)
+	const sortFiles = (uri: any) => {
+		const files = globSync(['*.css', '*.less', '*.scss'], {
+			cwd: uri.path,
+			absolute: true
+		})
 
-		if (info.isDirectory()) {
-			const files = globSync(['*.css', '*.less', '*.scss'], {
-				cwd: uri.path,
-				absolute: true
-			})
-
-			files.forEach(item => sortFile(item))
-		} else {
-			sortFile(uri.path)
-		}
+		files.forEach(item => sortFile(item))
 	}
 
 	const format_dir = vscode.commands.registerCommand('css_sorting.dir', sortFiles)
-	const format_file = vscode.commands.registerCommand('css_sorting.file', sortFiles)
+	const format_file = vscode.commands.registerCommand('css_sorting.file', uri => sortFile(uri.path))
 
 	context.subscriptions.push(...[command, format, save, format_dir, format_file])
 }

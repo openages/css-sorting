@@ -2,26 +2,26 @@
 	"name": "css-sorting",
 	"displayName": "CSS Sorting",
 	"description": "VS Code plugin to sort CSS rules content with specified order.",
-	"version": "4.0.0",
-	"homepage": "https://github.com/openages/stk",
+	"version": "4.0.2",
+	"homepage": "https://github.com/openages/css-sorting",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/openages/stk.git"
+		"url": "git+https://github.com/openages/css-sorting"
 	},
 	"license": "MIT",
 	"publisher": "1yasa",
 	"icon": "./icon.png",
-	"keywords": ["postcss", "css", "sorting", "order", "rank"],
-	"categories": ["Other"],
-	"engines": {
-		"vscode": "^1.22.0"
-	},
+	"keywords": ["postcss", "css", "csscomb", "sorting", "order", "rank"],
 	"vsce": {
 		"baseImagesUrl": "./icon.png",
 		"dependencies": true,
 		"yarn": false
 	},
-	"activationEvents": ["onLanguage:css", "onLanguage:postcss", "onLanguage:less", "onLanguage:scss"],
+	"categories": ["Formatters"],
+	"engines": {
+		"vscode": "^1.60.0"
+	},
+	"activationEvents": ["onStartupFinished"],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
@@ -31,15 +31,18 @@
 			},
 			{
 				"command": "css_sorting.format",
-				"title": "CSS Sorting: Format"
+				"title": "CSS Sorting: Format",
+				"category": "_internal"
 			},
 			{
 				"command": "css_sorting.dir",
-				"title": "CSS Sorting: Files"
+				"title": "CSS Sorting: Files",
+				"category": "_internal"
 			},
 			{
 				"command": "css_sorting.file",
-				"title": "CSS Sorting: File"
+				"title": "CSS Sorting: File",
+				"category": "_internal"
 			}
 		],
 		"menus": {
@@ -135,23 +138,17 @@
 		"postcss-sorting": "^8.0.2"
 	},
 	"devDependencies": {
-		"@types/micromatch": "^4.0.7",
-		"@types/mocha": "^10.0.6",
 		"@types/node": "^20.12.7",
-		"@types/proxyquire": "^1.3.31",
 		"@vscode/vsce": "^2.26.0",
-		"mocha": "^10.4.0",
-		"proxyquire": "^2.1.3",
 		"typescript": "^5.4.5",
 		"vscode": "^1.1.37"
 	},
 	"scripts": {
 		"postinstall": "node ./node_modules/vscode/bin/install",
 		"compile": "tsc",
-		"package": "vsce package --no-dependencies",
-		"publish": "vsce publish --no-dependencies",
-		"dev": "pnpm run compile --sourceMap --watch",
-		"build": "pnpm run compile && pnpm run package",
-		"test": "mocha out/**/*.spec.js -s 0 --colors"
+		"package": "vsce package",
+		"publish": "vsce publish",
+		"dev": "npm run compile --sourceMap --watch",
+		"build": "npm run compile && npm run package"
 	}
 }

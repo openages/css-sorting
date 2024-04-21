@@ -2,13 +2,13 @@ import postcss from 'postcss'
 import postcssSorting from 'postcss-sorting'
 import vscode from 'vscode'
 
-import default_config from '../default_config'
-import { getSettings } from '../managers/settings'
+import default_config from './default_config'
+import { getSettings } from './utils'
 
-import type { IResult } from '../types'
+import type { IResult } from './types'
 
 export function isSupportedSyntax(language: string): boolean {
-	return ['css', 'postcss', 'less', 'scss'].indexOf(language) !== -1
+	return ['css', 'less', 'scss'].indexOf(language) !== -1
 }
 
 export async function use(document: vscode.TextDocument, inRange?: vscode.Range): Promise<IResult> {
