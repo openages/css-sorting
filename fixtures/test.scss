@@ -1,15 +1,14 @@
 .block {
 	position: absolute;
-
-	span {
-		display: inline-block;
-	}
-
+	top: 0;
 	width: 50%;
+	color: red;
 
 	&__element {
 		display: none;
 	}
 
-	top: 0;
+	span {
+		display: inline-block;
+	}
 }

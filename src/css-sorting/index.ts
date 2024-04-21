@@ -1,17 +1,17 @@
-'use strict'
-
 import postcss from 'postcss'
 import postcssSorting from 'postcss-sorting'
 import vscode from 'vscode'
 
-import default_config from '../../default_config.json'
-import { IResult, ISettings } from '../types'
+import default_config from '../default_config'
+import { getSettings } from '../managers/settings'
+
+import type { IResult } from '../types'
 
 export function isSupportedSyntax(language: string): boolean {
 	return ['css', 'postcss', 'less', 'scss'].indexOf(language) !== -1
 }
 
-export async function use(settings: ISettings, document: vscode.TextDocument, inRange: vscode.Range): Promise<IResult> {
+export async function use(document: vscode.TextDocument, inRange?: vscode.Range): Promise<IResult> {
 	if (!isSupportedSyntax(document.languageId)) {
 		console.error(
 			'Cannot execute PostCSS Sorting because there is not style files. Supported: LESS, SCSS and CSS.'
@@ -20,7 +20,7 @@ export async function use(settings: ISettings, document: vscode.TextDocument, in
 		return
 	}
 
-	let text
+	let text: string
 	let range = inRange
 
 	if (!range) {
@@ -34,25 +34,15 @@ export async function use(settings: ISettings, document: vscode.TextDocument, in
 		text = document.getText(range)
 	}
 
-	const postcssConfig: postcss.ProcessOptions = {
-		from: document.uri.fsPath || ''
-	}
+	return transform(text, range)
+}
 
-	if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length !== 0) {
-		postcssConfig.from = vscode.workspace.workspaceFolders[0].uri.fsPath || ''
-	}
-
-	const config = Object.keys(settings.config).length ? settings.config : default_config
-
+export const transform = async (text: string, range?: vscode.Range) => {
+	const settings = getSettings()
+	const config = Object.keys(settings.config || {}).length ? settings.config : default_config
 	const postcssPlugins: postcss.AcceptedPlugin[] = [postcssSorting(config)]
 
-	return postcss(postcssPlugins)
-		.process(text, postcssConfig)
-		.then(
-			result =>
-				<IResult>{
-					css: result.css,
-					range
-				}
-		)
+	const { css } = await postcss(postcssPlugins).process(text)
+
+	return { css, range }
 }

@@ -9,9 +9,10 @@
 		"forceConsistentCasingInFileNames": true,
 		"noUnusedParameters": true,
 		"noUnusedLocals": true,
-		"pretty": true,
 		"removeComments": true,
 		"declaration": false,
-		"esModuleInterop": true
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"allowSyntheticDefaultImports": true
 	}
 }

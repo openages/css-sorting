@@ -26,31 +26,111 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "CSSSorting.execute",
+				"command": "css_sorting.execute",
 				"title": "CSS Sorting: Run"
+			},
+			{
+				"command": "css_sorting.format",
+				"title": "CSS Sorting: Format"
+			},
+			{
+				"command": "css_sorting.dir",
+				"title": "CSS Sorting: Files"
+			},
+			{
+				"command": "css_sorting.file",
+				"title": "CSS Sorting: File"
 			}
 		],
+		"menus": {
+			"editor/context": [
+				{
+					"command": "css_sorting.format",
+					"when": "editorTextFocus",
+					"group": "navigation"
+				}
+			],
+			"explorer/context": [
+				{
+					"command": "css_sorting.dir",
+					"when": "explorerResourceIsFolder",
+					"group": "navigation"
+				},
+				{
+					"command": "css_sorting.file",
+					"when": "resourceExtname == .css",
+					"group": "navigation"
+				},
+				{
+					"command": "css_sorting.file",
+					"when": "resourceExtname == .less",
+					"group": "navigation"
+				},
+				{
+					"command": "css_sorting.file",
+					"when": "resourceExtname == .scss",
+					"group": "navigation"
+				}
+			]
+		},
 		"configuration": {
 			"type": "object",
 			"title": "​CSS Sorting",
 			"properties": {
 				"CSSSorting.config": {
-					"type": ["object", "string"],
+					"type": "object",
 					"default": {},
 					"description": "Config object for CSS Sorting or path to config file.",
-					"scope": "resource"
-				},
-				"CSSSorting.showErrorMessages": {
-					"type": "boolean",
-					"default": true,
-					"description": "Show error messages or not. Will be automatically set to false if 'editor.formatOnSave' is enabled.",
-					"scope": "resource"
+					"scope": "resource",
+					"properties": {
+						"order": {
+							"type": "array",
+							"items": {
+								"oneOf": [
+									{
+										"type": "string",
+										"enum": [
+											"custom-properties",
+											"dollar-variables",
+											"at-variables",
+											"declarations",
+											"at-rules",
+											"rules"
+										]
+									},
+									{
+										"type": "object",
+										"properties": {
+											"type": {
+												"type": "string",
+												"enum": ["at-rule", "rule"]
+											},
+											"name": { "type": "string" },
+											"selector": { "type": "string" },
+											"hasBlock": { "type": "boolean" }
+										},
+										"required": ["type"]
+									}
+								]
+							}
+						},
+						"properties-order": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"unspecified-properties-position": {
+							"type": "string",
+							"enum": ["top", "bottom"]
+						}
+					}
 				}
 			}
 		}
 	},
 	"dependencies": {
-		"globby": "^14.0.1",
+		"fast-glob": "^3.3.2",
 		"postcss": "^8.4.38",
 		"postcss-sorting": "^8.0.2"
 	},
@@ -70,9 +150,8 @@
 		"compile": "tsc",
 		"package": "vsce package --no-dependencies",
 		"publish": "vsce publish --no-dependencies",
-		"help": "vsce ls",
-		"build": "pnpm run compile && pnpm t && pnpm run package",
-		"watch": "pnpm run compile --sourceMap --watch",
-		"test": "mocha out/**/*.spec.js -s 0"
+		"dev": "pnpm run compile --sourceMap --watch",
+		"build": "pnpm run compile && pnpm run package",
+		"test": "mocha out/**/*.spec.js -s 0 --colors"
 	}
 }

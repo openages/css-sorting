@@ -1,34 +1,20 @@
-'use strict'
-
+import { globSync } from 'fast-glob'
+import { readFileSync, statSync, writeFileSync } from 'fs'
+import { extname } from 'path'
 import vscode from 'vscode'
 
-import { use } from './css-sorting'
-import { getSettings } from './managers/settings'
+import { transform, use } from './css-sorting'
 import { output } from './utils'
 
 export function activate(context: vscode.ExtensionContext): void {
 	const outputChannel: vscode.OutputChannel = null
 
-	// Supported languages
-	const supportedDocuments: vscode.DocumentSelector = [
-		{ language: 'css', scheme: 'file' },
-		{ language: 'scss', scheme: 'file' },
-		{ language: 'less', scheme: 'file' }
-	]
-
-	// For plugin command: "CSSSorting.execute"
-	const command = vscode.commands.registerTextEditorCommand('CSSSorting.execute', textEditor => {
-		// Prevent run command without active TextEditor
-		if (!vscode.window.activeTextEditor) {
-			return null
-		}
+	const command = vscode.commands.registerTextEditorCommand('css_sorting.execute', textEditor => {
+		if (!vscode.window.activeTextEditor) return null
 
 		const document = textEditor.document
-		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri)
-		const workspaceUri = workspaceFolder ? workspaceFolder.uri : null
-		const settings = getSettings(workspaceUri)
 
-		use(settings, document, null)
+		use(document)
 			.then(result => {
 				if (!result) return
 
@@ -36,37 +22,72 @@ export function activate(context: vscode.ExtensionContext): void {
 					editBuilder.replace(result.range, result.css)
 				})
 			})
-			.catch(err => output(outputChannel, err, settings.showErrorMessages))
+			.catch(err => output(outputChannel, err))
 	})
 
-	// For commands: "Format Document" and "Format Selection"
-	const format = vscode.languages.registerDocumentRangeFormattingEditProvider(supportedDocuments, {
-		provideDocumentRangeFormattingEdits(
-			document: vscode.TextDocument,
-			range: vscode.Range
-		): vscode.ProviderResult<vscode.TextEdit[]> {
-			// Prevent run command without active TextEditor
-			if (!vscode.window.activeTextEditor) {
-				return null
-			}
+	const format = vscode.commands.registerTextEditorCommand('css_sorting.format', textEditor => {
+		if (!vscode.window.activeTextEditor) return null
 
-			const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri)
-			const workspaceUri = workspaceFolder ? workspaceFolder.uri : null
-			const settings = getSettings(workspaceUri)
+		const document = textEditor.document
 
-			return use(settings, document, range)
-				.catch(err => output(outputChannel, err, settings.showErrorMessages))
-				.then(result => {
-					if (!result) {
-						return
-					}
+		use(document, textEditor.selection)
+			.then(result => {
+				if (!result) return
 
-					return [vscode.TextEdit.replace(result.range, result.css)]
+				textEditor.edit(editBuilder => {
+					editBuilder.replace(result.range, result.css)
 				})
-		}
+			})
+			.catch(err => output(outputChannel, err))
 	})
 
-	// Subscriptions
-	context.subscriptions.push(command)
-	context.subscriptions.push(format)
+	const save = vscode.workspace.onWillSaveTextDocument(event => {
+		if (!vscode.window.activeTextEditor) return null
+
+		const textEditor = vscode.window.activeTextEditor
+		const document = event.document
+		const ext = extname(document.fileName)
+
+		if (!['.css', '.less', '.scss'].includes(ext)) return
+
+		if (textEditor && event.document.uri.toString() !== textEditor.document.uri.toString()) return
+
+		use(document)
+			.then(result => {
+				if (!result) return
+
+				textEditor.edit(editBuilder => {
+					editBuilder.replace(result.range, result.css)
+				})
+			})
+			.catch(err => output(outputChannel, err))
+	})
+
+	const sortFile = async (path: string) => {
+		const file_string = readFileSync(path).toString()
+
+		const { css } = await transform(file_string)
+
+		writeFileSync(path, css)
+	}
+
+	const sortFiles = async (uri: any) => {
+		const info = statSync(uri.path)
+
+		if (info.isDirectory()) {
+			const files = globSync(['*.css', '*.less', '*.scss'], {
+				cwd: uri.path,
+				absolute: true
+			})
+
+			files.forEach(item => sortFile(item))
+		} else {
+			sortFile(uri.path)
+		}
+	}
+
+	const format_dir = vscode.commands.registerCommand('css_sorting.dir', sortFiles)
+	const format_file = vscode.commands.registerCommand('css_sorting.file', sortFiles)
+
+	context.subscriptions.push(...[command, format, save, format_dir, format_file])
 }

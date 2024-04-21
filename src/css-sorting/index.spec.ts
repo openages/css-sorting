@@ -8,7 +8,7 @@ import vscode from 'vscode'
 import { ISettings } from '../types'
 
 const text = fs.readFileSync('./fixtures/test.scss').toString()
-// const textExpected = fs.readFileSync('./fixtures/test-expected.scss').toString();
+const textExpected = fs.readFileSync('./fixtures/test-expected.scss').toString()
 
 function mockupDocument(): vscode.TextDocument {
 	return <vscode.TextDocument>{
@@ -51,23 +51,22 @@ describe('PostCSS Sorting API', () => {
 		const document = mockupDocument()
 		const settings: ISettings = {}
 
-		const expected = text
 		const actual = await sorting.use(settings, document, null)
 
-		assert.equal(actual.css, expected)
+		assert.equal(actual.css, textExpected)
 	})
 
 	// it('should work with postcss-sorting config as js file', async () => {
-	// 	const document = mockupDocument();
-	// 	const settings: Types.ISettings = {
+	// 	const document = mockupDocument()
+	// 	const settings: ISettings = {
 	// 		config: {
 	// 			order: ['custom-properties', 'dollar-variables', 'declarations', 'at-rules', 'rules']
 	// 		}
-	// 	};
+	// 	}
 
-	// 	const expected = textExpected;
-	//       const actual = await sorting.use(settings, document, null);
+	// 	const expected = textExpected
+	// 	const actual = await sorting.use(settings, document, null)
 
-	// 	assert.equal(actual.css, expected);
-	// });
+	// 	assert.equal(actual.css, expected)
+	// })
 })

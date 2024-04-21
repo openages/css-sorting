@@ -1,24 +1,22 @@
-# VS Code Post​CSS Sorting
-
-> VS Code plugin to sort CSS rules content with specified order. Powered by [postcss-sorting](https://github.com/hudochenkov/postcss-sorting).
-
 ## Install
 
   * Press <kbd>F1</kbd> and select `Extensions: Install Extensions`.
-  * Search for and select `postcss-sorting`.
+  * Search for and select `css sorting`.
 
 See the [extension installation guide](https://code.visualstudio.com/docs/editor/extension-gallery) for details.
 
 ## Usage
 
-Press <kbd>F1</kbd> and run the command named `PostCSS Sorting: Run`.
+- Autosave trigger.
+- Full text mode: Press <kbd>F1</kbd> and run the command named `CSS Sorting: Run`.
+- Range mode: Select `full` css class and open context menu to `CSS Sorting: Format`.
+- File mode: in vscode left file tree, select styles folder or css/less/scss file, then open context menu to `CSS Sorting: Files/File`.
 
 ## Supported languages
 
-  * CSS
-  * PostCSS
-  * Less
-  * SCSS
+* CSS
+* Less
+* SCSS
 
 ## Options
 
@@ -41,30 +39,6 @@ For example:
 }
 ```
 
-See the [postcss-sorting documentation](https://github.com/hudochenkov/postcss-sorting#options) for all rules and predefined configs.
-
-Also we support:
-
-  * `CSSSorting` as `string` starts with `.` or `~` or `/`
-  * `CSSSortingConfig` property in `package.json`
-  * `.postcss-sorting.json`
-  * `postcss-sorting.json`
-  * `POSTCSS_SORTING_CONFIG` env
-
-## Keyboard shortcuts
-
-For changes keyboard shortcuts, create a new rule in `File -> Preferences -> Keyboard Shortcuts`:
-
-```json
-{
-  "key": "ctrl+shift+c",
-  "command": "CSSSorting.execute"
-}
-```
-
-## Changelog
-
-See the [Releases section of our GitHub project](https://github.com/mrmlnc/vscode-postcss-sorting/releases) for changelogs for each release version.
 
 ## License
 
