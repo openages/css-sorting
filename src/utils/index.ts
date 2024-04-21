@@ -1,18 +1,18 @@
-'use strict';
+'use strict'
 
-import * as vscode from 'vscode';
+import vscode from 'vscode'
 
 export function output(inChannel: vscode.OutputChannel, message: string, autoShowOutput: boolean = true): void {
-	let channel = inChannel;
+	let channel = inChannel
 	if (!channel) {
-		channel = vscode.window.createOutputChannel('Stylefmt');
+		channel = vscode.window.createOutputChannel('Stylefmt')
 	}
 
-	channel.clear();
-	channel.appendLine('[Stylefmt]');
-	channel.append(message.toString());
+	channel.clear()
+	channel.appendLine('[Stylefmt]')
+	channel.append(message.toString())
 
 	if (autoShowOutput) {
-		channel.show();
+		channel.show()
 	}
 }

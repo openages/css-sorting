@@ -1,9 +1,10 @@
 'use strict'
 
-import * as postcss from 'postcss'
-import * as postcssSorting from 'postcss-sorting'
-import * as vscode from 'vscode'
+import postcss from 'postcss'
+import postcssSorting from 'postcss-sorting'
+import vscode from 'vscode'
 
+import default_config from '../../default_config.json'
 import { IResult, ISettings } from '../types'
 
 export function isSupportedSyntax(language: string): boolean {
@@ -41,7 +42,9 @@ export async function use(settings: ISettings, document: vscode.TextDocument, in
 		postcssConfig.from = vscode.workspace.workspaceFolders[0].uri.fsPath || ''
 	}
 
-	const postcssPlugins: postcss.AcceptedPlugin[] = [postcssSorting(settings.config)]
+	const config = Object.keys(settings.config).length ? settings.config : default_config
+
+	const postcssPlugins: postcss.AcceptedPlugin[] = [postcssSorting(config)]
 
 	return postcss(postcssPlugins)
 		.process(text, postcssConfig)

@@ -4,12 +4,14 @@
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"rootDir": "src",
-		"outDir": "dist",
+		"outDir": "out",
+		"resolveJsonModule": true,
 		"forceConsistentCasingInFileNames": true,
 		"noUnusedParameters": true,
 		"noUnusedLocals": true,
 		"pretty": true,
 		"removeComments": true,
-		"declaration": false
+		"declaration": false,
+		"esModuleInterop": true
 	}
 }

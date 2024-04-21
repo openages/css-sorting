@@ -5,6 +5,7 @@ npm-debug.log*
 
 # production
 **/dist
+**/out
 *.vsix
 
 # misc

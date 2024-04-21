@@ -1,13 +1,13 @@
-'use strict';
+'use strict'
 
-import * as assert from 'assert'
-import * as fs from 'fs'
-import * as proxyquire from 'proxyquire'
-import * as vscode from 'vscode'
+import assert from 'assert'
+import fs from 'fs'
+import proxyquire from 'proxyquire'
+import vscode from 'vscode'
 
-import * as Types from '../types'
+import { ISettings } from '../types'
 
-const text = fs.readFileSync('./fixtures/test.scss').toString();
+const text = fs.readFileSync('./fixtures/test.scss').toString()
 // const textExpected = fs.readFileSync('./fixtures/test-expected.scss').toString();
 
 function mockupDocument(): vscode.TextDocument {
@@ -15,20 +15,26 @@ function mockupDocument(): vscode.TextDocument {
 		languageId: 'scss',
 		uri: { fsPath: '.tmp/test.scss' },
 		lineCount: text.split('\n').length,
-		lineAt: (line) => ({
+		lineAt: line => ({
 			lineNumber: line,
 			text: text.split('\n')[line]
 		}),
 		getText: () => text
-	};
+	}
 }
 
 class Position {
-	constructor(public line: number, public character: string) { }
+	constructor(
+		public line: number,
+		public character: string
+	) {}
 }
 
 class Range {
-	constructor(public start: Position, public end: Position) { }
+	constructor(
+		public start: Position,
+		public end: Position
+	) {}
 }
 
 const sorting = proxyquire('./index', {
@@ -38,18 +44,18 @@ const sorting = proxyquire('./index', {
 		workspace: { rootPath: '.tmp' },
 		'@noCallThru': true
 	}
-});
+})
 
 describe('PostCSS Sorting API', () => {
 	it('should work without configuration', async () => {
-		const document = mockupDocument();
-		const settings: Types.ISettings = {};
+		const document = mockupDocument()
+		const settings: ISettings = {}
 
-		const expected = text;
-		const actual = await sorting.use(settings, document, null);
+		const expected = text
+		const actual = await sorting.use(settings, document, null)
 
-		assert.equal(actual.css, expected);
-	});
+		assert.equal(actual.css, expected)
+	})
 
 	// it('should work with postcss-sorting config as js file', async () => {
 	// 	const document = mockupDocument();
@@ -60,8 +66,8 @@ describe('PostCSS Sorting API', () => {
 	// 	};
 
 	// 	const expected = textExpected;
-      //       const actual = await sorting.use(settings, document, null);
-            
+	//       const actual = await sorting.use(settings, document, null);
+
 	// 	assert.equal(actual.css, expected);
 	// });
-});
+})

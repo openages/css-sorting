@@ -11,7 +11,7 @@
 	"license": "MIT",
 	"publisher": "1yasa",
 	"icon": "./icon.png",
-	"keywords": ["postcss", "css", "sorting", "order","rank"],
+	"keywords": ["postcss", "css", "sorting", "order", "rank"],
 	"categories": ["Other"],
 	"engines": {
 		"vscode": "^1.22.0"
@@ -22,7 +22,7 @@
 		"yarn": false
 	},
 	"activationEvents": ["onLanguage:css", "onLanguage:postcss", "onLanguage:less", "onLanguage:scss"],
-	"main": "./dist/extension.js",
+	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
@@ -32,12 +32,12 @@
 		],
 		"configuration": {
 			"type": "object",
-			"title": "Post​CSS Sorting configuration",
+			"title": "​CSS Sorting",
 			"properties": {
 				"CSSSorting.config": {
 					"type": ["object", "string"],
 					"default": {},
-					"description": "Config object for PostCSS Sorting or path to config file.",
+					"description": "Config object for CSS Sorting or path to config file.",
 					"scope": "resource"
 				},
 				"CSSSorting.showErrorMessages": {
@@ -50,7 +50,7 @@
 		}
 	},
 	"dependencies": {
-		"config-profiler": "^2.0.3",
+		"globby": "^14.0.1",
 		"postcss": "^8.4.38",
 		"postcss-sorting": "^8.0.2"
 	},
@@ -59,11 +59,11 @@
 		"@types/mocha": "^10.0.6",
 		"@types/node": "^20.12.7",
 		"@types/proxyquire": "^1.3.31",
+		"@vscode/vsce": "^2.26.0",
 		"mocha": "^10.4.0",
 		"proxyquire": "^2.1.3",
 		"typescript": "^5.4.5",
-		"vscode": "^1.1.37",
-            "@vscode/vsce":"^2.26.0"
+		"vscode": "^1.1.37"
 	},
 	"scripts": {
 		"postinstall": "node ./node_modules/vscode/bin/install",
@@ -72,7 +72,7 @@
 		"publish": "vsce publish --no-dependencies",
 		"help": "vsce ls",
 		"build": "pnpm run compile && pnpm t && pnpm run package",
-		"watch": "pnpm run compile -- --sourceMap --watch",
-		"test": "mocha dist/**/*.spec.js -s 0"
+		"watch": "pnpm run compile --sourceMap --watch",
+		"test": "mocha out/**/*.spec.js -s 0"
 	}
 }

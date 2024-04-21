@@ -1,38 +1,38 @@
-'use strict';
+'use strict'
 
-import * as assert from 'assert'
-import * as proxyquire from 'proxyquire'
+import assert from 'assert'
+import proxyquire from 'proxyquire'
 
 function makeVscodeWorkspace(): object {
 	return {
 		getConfiguration: () => ({
 			get: (type: string) => {
 				if (type === 'CSSSorting') {
-					return { config: {}, showErrorMessages: true };
+					return { config: {}, showErrorMessages: true }
 				}
 				if (type === 'formatOnSave') {
-					return true;
+					return true
 				}
 			}
 		})
-	};
+	}
 }
 
 describe('Managers → Settings', () => {
-	let manager;
+	let manager
 
 	before(() => {
 		manager = proxyquire('./settings', {
 			vscode: { workspace: makeVscodeWorkspace(), '@noCallThru': true }
-		});
-	});
+		})
+	})
 
 	describe('.getSettings', () => {
 		it('should return settings', () => {
-			const expected = { config: {}, showErrorMessages: false };
-			const actual = manager.getSettings();
+			const expected = { config: {}, showErrorMessages: false }
+			const actual = manager.getSettings()
 
-			assert.deepEqual(actual, expected);
-		});
-	});
-});
+			assert.deepEqual(actual, expected)
+		})
+	})
+})
