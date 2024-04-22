@@ -71,13 +71,37 @@ export function activate(context: vscode.ExtensionContext): void {
 		writeFileSync(path, css)
 	}
 
-	const sortFiles = (uri: any) => {
-		const files = globSync(['*.css', '*.less', '*.scss'], {
+	const sortFiles = async (uri: any) => {
+		const files = globSync(['**/*.css', '**/*.less', '**/*.scss'], {
 			cwd: uri.path,
 			absolute: true
 		})
 
-		files.forEach(item => sortFile(item))
+		const tasks = files.map(item => sortFile(item))
+		const total = files.length
+		const increment = 100 / total
+
+		let current = files.length
+
+		if (!total) return
+
+		await vscode.window.withProgress(
+			{ title: 'CSS Sorting', location: vscode.ProgressLocation.Notification },
+			async p => {
+				for (const task of tasks) {
+					p.report({ message: `${current}/${total}`, increment })
+
+					await task
+					await new Promise(resolve => setTimeout(resolve, 300))
+
+					current = current - 1
+				}
+
+				vscode.window.showInformationMessage(`${total} CSS files has been sorted.`)
+
+				return
+			}
+		)
 	}
 
 	const format_dir = vscode.commands.registerCommand('css_sorting.dir', sortFiles)

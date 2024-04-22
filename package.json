@@ -148,7 +148,7 @@
 		"tsc": "tsc",
 		"package": "vsce package",
 		"publish": "vsce publish",
-		"dev": "npm run tsc --sourceMap --watch",
+		"dev": "tsc --sourceMap --watch",
 		"build": "npm run tsc && npm run package"
 	}
 }
