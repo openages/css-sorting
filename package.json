@@ -2,7 +2,7 @@
 	"name": "css-better-sorting",
 	"displayName": "CSS Better Sorting",
 	"description": "VS Code plugin to sort CSS rules content with specified order.",
-	"version": "3.0.3",
+	"version": "3.0.4",
 	"homepage": "https://github.com/openages/css-sorting",
 	"repository": {
 		"type": "git",
