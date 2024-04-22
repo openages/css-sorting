@@ -92,7 +92,6 @@ export function activate(context: vscode.ExtensionContext): void {
 					p.report({ message: `${current}/${total}`, increment })
 
 					await task
-					await new Promise(resolve => setTimeout(resolve, 300))
 
 					current = current - 1
 				}
