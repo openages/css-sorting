@@ -4,10 +4,11 @@ import { extname } from 'path'
 import vscode from 'vscode'
 
 import { transform, use } from './sorting'
-import { output } from './utils'
+import { getSettings, output } from './utils'
 
 export function activate(context: vscode.ExtensionContext): void {
 	const outputChannel: vscode.OutputChannel = null
+	const setting = getSettings()
 
 	const command = vscode.commands.registerTextEditorCommand('css_sorting.execute', textEditor => {
 		if (!vscode.window.activeTextEditor) return null
@@ -74,6 +75,7 @@ export function activate(context: vscode.ExtensionContext): void {
 	const sortFiles = async (uri: any) => {
 		const files = globSync(['**/*.css', '**/*.less', '**/*.scss'], {
 			cwd: uri.path,
+			ignore: setting.ignore,
 			absolute: true
 		})
 

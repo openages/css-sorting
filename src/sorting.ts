@@ -2,7 +2,6 @@ import postcss from 'postcss'
 import postcssSorting from 'postcss-sorting'
 import vscode from 'vscode'
 
-import default_config from './default_config'
 import { getSettings } from './utils'
 
 import type { IResult } from './types'
@@ -39,8 +38,13 @@ export async function use(document: vscode.TextDocument, inRange?: vscode.Range)
 
 export const transform = async (text: string, range?: vscode.Range) => {
 	const settings = getSettings()
-	const config = Object.keys(settings.config || {}).length ? settings.config : default_config
-	const postcssPlugins: postcss.AcceptedPlugin[] = [postcssSorting(config)]
+	const postcssPlugins: postcss.AcceptedPlugin[] = [
+		postcssSorting({
+			order: settings.order,
+			'properties-order': settings['properties-order'],
+			'unspecified-properties-position': settings['unspecified-properties-position']
+		})
+	]
 
 	const { css } = await postcss(postcssPlugins).process(text)
 

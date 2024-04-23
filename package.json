@@ -2,7 +2,7 @@
 	"name": "css-better-sorting",
 	"displayName": "CSS Better Sorting",
 	"description": "VS Code plugin to sort CSS rules content with specified order.",
-	"version": "3.0.4",
+	"version": "3.1.0",
 	"homepage": "https://github.com/openages/css-sorting",
 	"repository": {
 		"type": "git",
@@ -108,9 +108,15 @@
 												"type": "string",
 												"enum": ["at-rule", "rule"]
 											},
-											"name": { "type": "string" },
-											"selector": { "type": "string" },
-											"hasBlock": { "type": "boolean" }
+											"name": {
+												"type": "string"
+											},
+											"selector": {
+												"type": "string"
+											},
+											"hasBlock": {
+												"type": "boolean"
+											}
 										},
 										"required": ["type"]
 									}
@@ -126,6 +132,12 @@
 						"unspecified-properties-position": {
 							"type": "string",
 							"enum": ["top", "bottom"]
+						},
+						"ignore": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
 						}
 					}
 				}
@@ -135,7 +147,8 @@
 	"dependencies": {
 		"fast-glob": "^3.3.2",
 		"postcss": "^8.4.38",
-		"postcss-sorting": "^8.0.2"
+		"postcss-sorting": "^8.0.2",
+		"webpack-merge": "^5.10.0"
 	},
 	"devDependencies": {
 		"@types/node": "^20.12.7",

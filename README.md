@@ -36,7 +36,9 @@ For example:
       "at-rules",
       "rules"
     ],
-    "properties-order": ["display", "position", "top", "right", "bottom", "left"]
+    "properties-order": ["display", "position", "top", "right", "bottom", "left"],
+    "unspecified-properties-position": "bottom",
+    "ignore": ["**/node_modules/**", "**/dist/**"]
   }
 }
 ```

@@ -316,5 +316,6 @@ export default {
 		'unicode-bidi',
 		'vector-effect'
 	],
-	'unspecified-properties-position': 'bottom'
+	'unspecified-properties-position': 'bottom',
+	ignore: ['**/node_modules/**', '**/dist/**']
 }

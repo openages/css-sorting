@@ -7,8 +7,6 @@
 		"outDir": "out",
 		"resolveJsonModule": true,
 		"forceConsistentCasingInFileNames": true,
-		"noUnusedParameters": true,
-		"noUnusedLocals": true,
 		"removeComments": true,
 		"declaration": false,
 		"esModuleInterop": true,

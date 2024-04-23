@@ -1,9 +1,15 @@
 import vscode from 'vscode'
+import { merge } from 'webpack-merge'
 
-import { ISettings } from './types'
+import default_config from './default_config'
 
-export function getSettings(): ISettings {
-	return vscode.workspace.getConfiguration().get('CSSSorting') as ISettings
+import type { ISettings } from './types'
+
+export function getSettings() {
+	return merge<ISettings>(
+		default_config as ISettings,
+		(vscode.workspace.getConfiguration().get('CSSSorting') as any).config as ISettings
+	)
 }
 
 export function output(inChannel: vscode.OutputChannel, message: string, autoShowOutput: boolean = true): void {
